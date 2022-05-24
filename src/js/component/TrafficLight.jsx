@@ -8,6 +8,8 @@ function TrafficLight() {
 		purpleLight: "general purple",
 	});
 
+	const [int, setInt] = useState(null);
+
 	function handleClick(event) {
 		let name = event.target.getAttribute("name");
 
@@ -45,6 +47,8 @@ function TrafficLight() {
 	}
 
 	let number = 0;
+	let interval = null;
+
 	function intermitente() {
 		function inter() {
 			number++;
@@ -79,7 +83,8 @@ function TrafficLight() {
 			});
 		}
 
-		setInterval(inter, 1000);
+		setInt(setInterval(inter, 1000));
+		// interval = setInterval(inter, 1000);
 	}
 
 	function extraLight() {
@@ -88,15 +93,26 @@ function TrafficLight() {
 
 		let atrName = document.createAttribute("name");
 		let atrClick = document.createAttribute("onClick");
-		
+
 		atrClick.value = { handleClick };
 		atrName.value = "purple";
 
 		hijo.setAttributeNode(atrClick);
 		hijo.setAttributeNode(atrName);
 
-		hijo.classList.add("general purple");
+		// hijo.classList.add({light.purpleLight});
 		padre.appendChild(hijo);
+	}
+
+	function prueba() {
+		console.log({ interval });
+		if (interval === null) {
+			intermitente();
+		} else {
+			clearInterval(interval);
+			setInt(null);
+			console.log({ interval });
+		}
 	}
 
 	return (
@@ -117,8 +133,12 @@ function TrafficLight() {
 					className={light.greenLight}></div>
 			</div>
 			<div className="intermitente">
-				<button onClick={intermitente}>Intermitente</button>
-				<button onClick={extraLight}>Purple</button>
+				<p>
+					Antes de darle a <strong>intermitente</strong>, prueba los
+					colores
+				</p>
+				<button onClick={prueba}>Intermitente</button>
+				{/* <button onClick={extraLight}>Purple</button> */}
 			</div>
 		</div>
 	);
